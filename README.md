@@ -1,20 +1,23 @@
-# application-boilerplate-js
+# Application Boilerplate
 
-The Application Boilerplate is a starter application for building custom templates with the ArcGIS API for JavaScript.
+An ArcGIS API for JavaScript 4 Starter Application.
+
+This starter application is for building ArcGIS Online configurable applications with the ArcGIS API for JavaScript version 4.x. We hope it helps :)
 
 ## Features
-This bare-bones app includes all the code you need to build an ArcGIS Online template. It will save you time when:
 
-*	Making an ArcGIS Online compatible template.
-*	Using your ArcGIS Online webmap to power the template.
+This bare-bones app includes all the code you need to build an ArcGIS Online configurable application. It will save you time when:
+
+*	Making an ArcGIS Online compatible application.
+*	Using your ArcGIS Online webscene to power the application.
 *	Localizing your application in different languages.
 *	Capturing URL parameters and using them in your application.
-*	Using settings from your ArcGIS Online organization or configured application.
+*	Using settings from your ArcGIS Online portal or configured application.
 *	Enabling your application to sign-in to ArcGIS Online using [OAuth 2.0](http://oauth.net/2/).
 
-[View it live](http://esri.github.io/application-boilerplate-js/application_boilerplate/)
+[View it live](http://esri.github.io/application-boilerplate-js/)
 
-![App](https://raw.github.com/Esri/application-boilerplate-js/master/application_boilerplate/images/thumb.png)
+[![App](https://raw.github.com/Esri/application-boilerplate-js/4master/images/thumb.png)](http://esri.github.io/application-boilerplate-js/)
 
 ## Getting Started
 
@@ -29,36 +32,148 @@ Review the following ArcGIS.com help topics for details on Templates:
 
 The template consists of the following folders and files:
 
-**/config/:** A folder for your application's configuration files. 
+- **/config/:** A folder for your application's configuration files.
+    - **config.json:** Define the default configuration information for the application. You can use this file to specify things like a default web map id, a proxy url, default services, default color theme and other application-specific settings.
+- **/css/:** Contains the CSS files for the application.
+    - **main.css** This file contains the map styles that set the margin, padding and initial height (100%).
+- **/images/**: Contains images used by the application and this readme.
+- **/js/**: Contains JavaScript files
+    - **dojoConfig.js:** Dojo configuration file for defining module packages.
+    - **/application/:** Application specific logic. This is where you would put your application's classes and logic.
+        - **main.js:** Creates a scene based on configuration info. You will write all your main application logic in here.
+        - **mainGroup.js:** Creates a group based on configuration info. This file is not used by default and serves as an example.
+        - **mainWebmap.js:** Creates a map based on configuration info. This file is not used by default and serves as an example.
+        - **/nls/:** The nls folder contains a file called resources.js that contains the language strings used by the application. If the application needs to be supported by [multiple locales](https://developers.arcgis.com/en/javascript/jshelp/localization.html) you can create a folder for each locale and inside that folder add a resources.js file with the translated strings. See the resources.js file in the nls/fr folder for an example of this in French.
+    - **/boilerplate/:** These are boilerplate specific classes and logic.
+        -  **Boilerplate.js:** Module that takes care of "application"-specific work like retrieving the application configuration settings by appid, getting the url parameters (web map id and appid), and retrieving organization specific info if applicable. You will not need to modify this file. Also sets the [proxy](https://developers.arcgis.com/en/javascript/jshelp/ags_proxy.html) and geometry service if the url's have been provided in the config.json file or are available from the org. Once executed you'll have access to an object that contains properties that give you access to the following:
+            - application specific properties
+            - appid
+            -  webmap
+            - helperServices: geometry, print, locator service urls
+            - proxy  url
+        - **demoWebmap.json:** An example local webmap JSON file. Can be turned on in the boilerplate settings.
+        - **demoWebscene.json:** An example local webscene JSON file. Can be turned on in the boilerplate settings.
+        - **settings.json:** Customize how the boilerplate operates by editing this file.
+- **/resources/:** Contains helpful files for your application.
+    - *resources/configurationPanel.js** Default configuration panel settings for the template. This is only applicable to configurable templates. This example will create a configuration panel with one dropdown list that contains three template color choices (seaside, chrome, pavement). When the templateConfig.js module retrieves any configurable settings you'll get the theme name back in a parameter named theme. Then you can apply the necessary css to your application to apply the new colors - like change the border color etc. See the [Adding configurable parameters to templates](http://doc.arcgis.com/en/arcgis-online/create-maps/configurable-templates.htm) help topic for more details.
+- **index.html**: The default html file for the application.
 
-*   **defaults.js:** Define the default configuration information for the template. You can use this file to specify things like a default web map id, a proxy url, default services, a Bing maps key, default color theme and other template-specific settings.
+## Settings & Configuration
 
-*   **templateConfig.js:** Options file for configuring your template to query for specific resources and items. You can edit this file and your template can enable or disable querying for things such as localization files, ArcGIS group information, group items, custom url parameters, etc.
+### Configuration Options (config.json)
 
-*   **demoMap.js:** This map file can be used as a substitute for an arcgis.com hosted webmap. It contains webmap JSON that can be used to configure a map locally. To use this file instead of an online hosted webmap, set the `useLocalWebmap` option to `true` in `templateConfig.js`. Make sure the option `localWebmapFile` is pointing to this file location.
- 
-**/css/:** Contains the CSS files for the application.
+This is the configuration options for the application.
 
-*	**main.css** This file contains the map styles that set the margin, padding and initial height (100%).
+|property|description|type|default|
+|---|---|---|---|
+|appid|todo|String|""|
+|group|todo|String|""|
+|webscene|todo|String|"19faa71a3bf6468cae35b4fce9393a7d"|
+|webmap|todo|String|""|
+|title|todo|String|""|
+|portalUrl|todo|String|"https://www.arcgis.com"|
+|oauthappid|todo|String|""|
+|proxyUrl|Enter the url to the proxy if needed by the application. See the [Using the proxy page](http://developers.arcgis.com/en/javascript/jshelp/ags_proxy.html) help topic for details.|String|""|
+|units|todo|String|todo|
+|helperServices|todo|Object|See below|
 
-**/images/**: Contains images used by the application.
+#### Sample
 
-**/js/**: Contains JavaScript files:
+```js
+{
+  "appid": "",
+  "group": "",
+  "webscene": "19faa71a3bf6468cae35b4fce9393a7d",
+  "webmap": "",
+  "title": "",
+  "portalUrl": "https://www.arcgis.com",
+  "oauthappid": "",
+  "proxyUrl": "",
+  "units": "",
+  "helperServices": {
+    "geometry": {
+      "url": null
+    },
+    "printTask": {
+      "url": null
+    },
+    "elevationSync": {
+      "url": null
+    },
+    "geocode": [{
+      "url": null
+    }]
+  }
+}
+```
 
-*   **/nls/:** The nls folder contains a file called resources.js that contains the language strings used by the application. If the application needs to be supported by [multiple locales](https://developers.arcgis.com/en/javascript/jshelp/localization.html) you can create a folder for each locale and inside that folder add a resources.js file with the translated strings. See the resources.js file in the nls/fr folder for an example of this in French.
-*   **main.js:** Creates the map based on configuration info. You will write all your main application logic in here.
-*   **template.js:** Module that takes care of "template"-specific work like retrieving the application configuration settings by appid, getting the url parameters (web map id and appid), handling localization details and retrieving organization specific info if applicable. You will most likely not need to modify this file. Also sets the [proxy](https://developers.arcgis.com/en/javascript/jshelp/ags_proxy.html) and geometry service if the url's have been provided in the defaults.js file or are available from the org. Once executed you'll have access to an object that contains properties that give you access to the following:
-    *   Template specific properties
-    *   appid
-    *   webmap
-    *   helperServices: geometry, print, locator service urls
-    *   i18n: Strings and isRightToLeft property that can be used to determine if the application is being viewed from a language where text is read left-to-right like Hebrew or Arabic.
-    *   proxy  url
-    
-**index.html**: The default html file for the application.
+### Boilerplate Settings (settings.json)
 
-**/resources/**: Contains helpful files for your application.
-*   **resources/configurationPanel.js** Default configuration panel settings for the template. This is only applicable to configurable templates. This example will create a configuration panel with one dropdown list that contains three template color choices (seaside, chrome, pavement). When the templateConfig.js module retrieves any configurable settings you'll get the theme name back in a parameter named theme. Then you can apply the necessary css to your application to apply the new colors - like change the border color etc. See the [Adding configurable parameters to templates](http://doc.arcgis.com/en/arcgis-online/create-maps/configurable-templates.htm) help topic for more details.
+|property|description|type|default|
+|---|---|---|---|
+|webscene|Webscene related settings|Object|See below|
+|webscene.fetch|When true the application will query for a webscene|Boolean|true|
+|webscene.useLocal|Use a local hosted web scene instead of a web scene on ArcGIS or portal|Boolean|false|
+|webscene.localFile|Webscene file to use for the local web scene|String|"boilerplate/demoWebscene.json"|
+|webmap|Webmap related settings|Object|See below|
+|webmap.fetch|When true the application will query for a webmap|Boolean|false|
+|webmap.useLocal|Use a local hosted web map instead of a web map on ArcGIS or portal|Boolean|false|
+|webmap.localFile|Webmap file to use for the local web map|String|"boilerplate/demoWebmap.json"|
+|group|Group related settings|Object|See below|
+|group.fetchInfo|When true the application will query for a group's information|Boolean|false|
+|group.fetchItems|When true the application will query for a group's items|Boolean|false|
+|group.itemParams|Defines query paramaters for fetching group items|Object|See below|
+|portal|Portal related settings|Object|See below|
+|portal.fetch|When true the application will query arcgis.com for default settings for helper services, units etc. If you want to use custom settings for units or any of the helper services set queryForOrg to false then enter default values for any items you need using the helper services and units properties.|Boolean|true|
+|urlItems|Defines which URL parameters should be captured and stored into the config for use within the application|String[]|See below|
+|webTierSecurity|support sending credentials with AJAX requests to specific domains. This will allow editing of feature services secured with web-tier authentication|Boolean|false|
+|esriEnvironment|Most users will not need to modify this value. For esri hosting environments only. Will automatically create a "portalUrl" and "proxyUrl" for the application. Only set this is to true if the app is going to be stored on Esri's hosting servers. If you are using your own custom hosted portal, set the "portalUrl" in config.json instead of setting this to true.|   Boolean|false|
+
+#### Sample
+```js
+{
+  "webscene": {
+    "fetch": true,
+    "useLocal": false,
+    "localFile": "boilerplate/demoWebscene.json"
+  },
+  "webmap": {
+    "fetch": false,
+    "useLocal": false,
+    "localFile": "boilerplate/demoWebmap.json"
+  },
+  "group": {
+    "fetchInfo": false,
+    "fetchItems": false,
+    "itemParams": {
+      "query": "group:\"{groupid}\" AND -type:\"Code Attachment\"",
+      "sortField": "modified",
+      "sortOrder": "desc",
+      "num": 9,
+      "start": 0
+    }
+  },
+  "portal": {
+    "fetch": true
+  },
+  "urlItems": [
+    "appid",
+    "group",
+    "oauthappid",
+    "webmap",
+    "webscene",
+    "embed",
+    "center",
+    "extent",
+    "level",
+    "marker",
+    "components",
+    "viewpoint"
+  ],
+  "webTierSecurity": false,
+  "esriEnvironment": false
+}
+```
 
 ## Instructions
 
@@ -73,10 +188,10 @@ The template consists of the following folders and files:
 
 1. To deploy this application, download the template from Portal/ArcGIS Online and unzip it.
 2. Copy the unzipped folder containing the web app template files, such as index.html, to your web server. You can rename the folder to change the URL through which users will access the application. By default the URL to the app will be `http://<Your Web Server>/<app folder name>/index.html`
-3. Change the sharing host, found in defaults.js inside the config folder for the application, to the sharing URL for ArcGIS Online or Portal. For ArcGIS Online users, keep the default value of www.arcgis.com or specify the name of your organization.
-  - ArcGIS Online Example:  `"sharinghost": location.protocol + "//" + “<your organization name>.maps.arcgis.com`
-  - Portal Example where `arcgis` is the name of the Web Adaptor: `"sharinghost": location.protocol + "//" + "webadaptor.domain.com/arcgis"`
-4. If you are using Portal or a local install of the ArcGIS API for JavaScript, change all references to the ArcGIS API for JavaScript in index.html to refer to your local copy of the API. Search for the references containing `"//js.arcgis.com/3.13"` and replace this portion of the reference with the url to your local install.
+3. Change the portalUrl, found in config.json inside the config folder for the application, to the portalUrl for ArcGIS Online or Portal. For ArcGIS Online users, keep the default value of www.arcgis.com or specify the name of your organization.
+  - ArcGIS Online Example:  `"portalUrl": location.protocol + "//" + “<your organization name>.maps.arcgis.com`
+  - Portal Example where `arcgis` is the name of the Web Adaptor: `"portalUrl": location.protocol + "//" + "webadaptor.domain.com/arcgis"`
+4. If you are using Portal or a local install of the ArcGIS API for JavaScript, change all references to the ArcGIS API for JavaScript in index.html to refer to your local copy of the API. Search for the references containing `"//js.arcgis.com/4.0"` and replace this portion of the reference with the url to your local install.
   - For example: `"//webadaptor.domain.com/arcgis/jsapi/jsapi"` where `arcgis` is the name of your Web Adaptor.
 5. Copy a map or group ID from Portal/ArcGIS Online and replace the default web map ID in the application’s index.html page. You can now run the application on your web server or customize the application further.
 

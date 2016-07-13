@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Define the versions of IE that will be used to render the page. See Microsoft documentation for details. Optional. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <!-- End Responsive -->
+  <!-- Use protocol relative urls that way if the browser is viewing the page via HTTPS the js/css file will be requested using the HTTPS protocol -->
+  <link rel="stylesheet" href="//js.arcgis.com/4.0/esri/css/main.css">
+  <!-- Load any application specific styles -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body class="app-bp--loading">
+  <div class="app-bp-loading-indicator">
+    <div class="app-bp-loading-message" id="loading_message"></div>
+  </div>
+  <div id="viewDiv" class="app-bp-view"></div>
+  <script type="text/javascript" src="js/dojoConfig.js"></script>
+  <script type="text/javascript" src="//js.arcgis.com/4.0/"></script>
+  <script type="text/javascript">
+    require([
+      "boilerplate",
+      "application"
+    ], function (
+      Boilerplate,
+      applicationMain
+    ) {
+
+      // create my main application. Start placing your logic in the main.js file.
+      var mainApp = new applicationMain();
+
+      // create the template. This will take care of all the logic required for template applications. If unsuccessful, we're calling error on main. Otherwise, we call startup on main.
+      new Boilerplate().then(mainApp.init.bind(mainApp), mainApp.reportError.bind(mainApp));
+
+    });
+
+  </script>
+</body>
+
+</html>
