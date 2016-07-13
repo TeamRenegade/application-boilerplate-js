@@ -3,7 +3,6 @@ define([
   "dojo/i18n!./nls/resources",
 
   "dojo/_base/declare",
-  "dojo/_base/kernel",
 
   "dojo/dom",
   "dojo/dom-attr",
@@ -17,7 +16,7 @@ define([
 
 ], function (
   i18n,
-  declare, kernel,
+  declare,
   dom, domAttr, domClass,
   MapView,
   WebMap
@@ -34,10 +33,6 @@ define([
     error: "app-bp--error"
   };
 
-  var RTL_LANGS = ["ar", "he"];
-  var LTR = "ltr";
-  var RTL = "rtl";
-
   return declare(null, {
 
     //--------------------------------------------------------------------------
@@ -52,6 +47,8 @@ define([
 
     config: null,
 
+    direction: null,
+
     //--------------------------------------------------------------------------
     //
     //  Public Methods
@@ -60,6 +57,7 @@ define([
 
     init: function (boilerplate) {
       if (boilerplate) {
+        this.direction = boilerplate.direction;
         this.config = boilerplate.config;
         this.boilerplateResults = boilerplate.results;
         this._setDirection();
@@ -94,14 +92,7 @@ define([
     //--------------------------------------------------------------------------
 
     _setDirection: function () {
-      var direction = LTR;
-      RTL_LANGS.some(function (l) {
-        if (kernel.locale.indexOf(l) !== -1) {
-          direction = RTL;
-          return true;
-        }
-        return false;
-      });
+      var direction = this.direction;
       var dirNode = document.getElementsByTagName("html")[0];
       domAttr.set(dirNode, "dir", direction);
     },
@@ -109,6 +100,13 @@ define([
     // create a scene based on the input web scene id
     _createWebmap: function () {
       var webmap, webmapItem = this.boilerplateResults.webmapItem;
+
+      if (!webmapItem) {
+        var error = new Error("main:: webmap data does not exist.");
+        this.reportError(error);
+        return;
+      }
+
       if (webmapItem.data) {
         webmap = new WebMap({
           portalItem: webmapItem.data

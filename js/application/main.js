@@ -3,7 +3,6 @@ define([
   "dojo/i18n!./nls/resources",
 
   "dojo/_base/declare",
-  "dojo/_base/kernel",
 
   "dojo/dom",
   "dojo/dom-attr",
@@ -22,7 +21,7 @@ define([
 
 ], function (
   i18n,
-  declare, kernel,
+  declare,
   dom, domAttr, domClass,
   Camera,
   Point, SpatialReference,
@@ -42,10 +41,6 @@ define([
     errorIcon: "esri-icon-notice-round"
   };
 
-  var RTL_LANGS = ["ar", "he"];
-  var LTR = "ltr";
-  var RTL = "rtl";
-
   return declare(null, {
 
     //--------------------------------------------------------------------------
@@ -60,6 +55,8 @@ define([
 
     config: null,
 
+    direction: null,
+
     //--------------------------------------------------------------------------
     //
     //  Public Methods
@@ -68,6 +65,7 @@ define([
 
     init: function (boilerplate) {
       if (boilerplate) {
+        this.direction = boilerplate.direction;
         this.config = boilerplate.config;
         this.boilerplateResults = boilerplate.results;
         this._setDirection();
@@ -102,20 +100,18 @@ define([
     //--------------------------------------------------------------------------
 
     _setDirection: function () {
-      var direction = LTR;
-      RTL_LANGS.some(function (l) {
-        if (kernel.locale.indexOf(l) !== -1) {
-          direction = RTL;
-          return true;
-        }
-        return false;
-      });
+      var direction = this.direction;
       var dirNode = document.getElementsByTagName("html")[0];
       domAttr.set(dirNode, "dir", direction);
     },
 
     _createWebscene: function () {
       var webscene, websceneItem = this.boilerplateResults.websceneItem;
+      if (!websceneItem) {
+        var error = new Error("main:: webscene data does not exist.");
+        this.reportError(error);
+        return;
+      }
       if (websceneItem.data) {
         webscene = new WebScene({
           portalItem: websceneItem.data
@@ -150,6 +146,7 @@ define([
       }
     },
 
+    // todo: move this into some kind of helper class
     _setCameraViewpoint: function () {
       var viewpointParamString = this.config.viewpoint;
       var viewpointArray = viewpointParamString && viewpointParamString.split(";");
