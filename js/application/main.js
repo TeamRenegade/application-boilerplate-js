@@ -36,8 +36,8 @@ define([
   //--------------------------------------------------------------------------
 
   var CSS = {
-    loading: "app-bp--loading",
-    error: "app-bp--error",
+    loading: "boilerplate--loading",
+    error: "boilerplate--error",
     errorIcon: "esri-icon-notice-round"
   };
 
@@ -48,8 +48,6 @@ define([
     //  Variables
     //
     //--------------------------------------------------------------------------
-
-    boilerplate: null,
 
     boilerplateResults: null,
 
